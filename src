@@ -4,10 +4,6 @@ import time
 import threading
 import re
 
-class DadosBackup:
-    def __init__(self, nome_usuario):
-        self.nome_usuario = nome_usuario
-
 class SistemaBackup:
     def __init__(self, tela_main):
         self.tela_main = tela_main
@@ -53,14 +49,14 @@ class SistemaBackup:
 
     def validacao_nome(self, nome):
     
-        padrao = r'^[a-zA-Z][a-zA-A.]{2,19}$'
+        padrao = r'^[a-zA-Z][a-zA-Z.]{2,19}$'
         
         if not nome:
             return False, "O nome de usuário não pode estar vazio."
         
         if not re.match(padrao, nome):
             return False, "Nome inválido!\n\n" \
-                        " ex) joao.silva "
+                          " ex) joao.silva "
         
         return True, None
 
@@ -108,31 +104,17 @@ class SistemaBackup:
         self.BarraProgresso.config(maximum=100)
         self.progresso_valor.set(0)
         
-        # Inicia a tarefa de backup em uma thread separada
-        self.backup_thread = threading.Thread(target=self.executar_backup_simulado, args=(nome_usuario,))
+        # Inicia a tarefa de backup em uma thread separada (implemente a lógica em executar_backup_real)
+        self.backup_thread = threading.Thread(target=self.executar_backup_real, args=(nome_usuario,))
         self.backup_thread.start()
 
-    def executar_backup_simulado(self, nome_usuario):
-        #Simula o processo de backup e atualiza a barra de progresso."""
-        print(f"Iniciando backup para: {nome_usuario}")
-        
-        # Simulação de 10 passos
-        num_passos = 10 
-        
-        for passo in range(1, num_passos + 1):
-            time.sleep(0.5)
-            
-            # Calcula o percentual e atualiza a variável de controle
-            percentual = int((passo / num_passos) * 100)
-            self.progresso_valor.set(percentual)
-            
-            # Atualiza a barra
-            self.tela_main.update_idletasks()
-            
-            print(f"Passo {passo} de {num_passos} concluído ({percentual}%)")
-
-        # Chama a função de finalização
-        self.tela_main.after(0, self.finalizar_backup)
+    def executar_backup_real(self):
+        """Implemente aqui a lógica real do backup.
+        - Atualize o progresso com: self.tela_main.after(0, lambda: self.progresso_valor.set(percentual))
+        - Ao finalizar com sucesso, chame: self.tela_main.after(0, self.finalizar_backup)
+        - Em caso de erro, você pode exibir messagebox via self.tela_main.after(0, ...)
+        """
+        pass
 
     def finalizar_backup(self):
       
